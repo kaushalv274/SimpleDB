@@ -135,16 +135,11 @@ public class SimpleDB {
 					variableUnSets.get(var).remove(transactions.size()-1);
 				}
 				
-			//}
-			//for(String var: last.getChangedVariables()) {
 				int isPresent = this.get(var);
-				System.out.println("ROLLBACK oldd value is" + isPresent );
-				System.out.println(valueCounts);
 				boolean isPresentTrans = last.getTransVariables().containsKey(var);
 				/*Variable was set earlier but value is change*/
-				System.out.println(last.getTransVariables());
 				Integer key = last.getTransVariables().get(var);
-				System.out.println(" " +  isPresentTrans + " key" + key);
+
 				if(isPresent>0 && isPresentTrans) {
 					valueCounts.put(key, valueCounts.get(key)-1);
 					valueCounts.put(isPresent,valueCounts.get(isPresent)+1);
@@ -211,7 +206,6 @@ public class SimpleDB {
 			if(this.get(var)>0) {
 				int oldVal = this.get(var);
 				valueCounts.put(oldVal, valueCounts.get(oldVal)-1);
-				System.out.println(valueCounts + "After creting new trans and sett");
 			}
 
 			if(valueCounts.containsKey(val)) {
@@ -286,11 +280,9 @@ public class SimpleDB {
 		}
 		
 		if(retVal==null) {
-			//System.out.println("NULL");
 			return -1;
 		}
 		else {
-			//System.out.println(retVal.intValue());
 		}
 		return retVal.intValue();
 	}
@@ -329,14 +321,14 @@ public class SimpleDB {
 			return variableChanges;
 		}
 		
-		HashMap<String,Integer> transVariables;
-		HashSet<String> variableChanges;
+		HashMap<String,Integer> transVariables; /*List of variables stored during this transaction*/
+		HashSet<String> variableChanges;        /*Set of variables which were SET/UNSET in this transaction*/
 	}
 
 	HashMap<String,Integer> variables;     /* Stores the variables defined outside any transaction*/
 	HashMap<Integer,Integer> valueCounts;  /* Store value counts of variables */
-	ArrayList<Transaction> transactions;
-	HashMap<String,TreeSet<Integer>> variableSets;
-	HashMap<String,TreeSet<Integer>> variableUnSets;
+	ArrayList<Transaction> transactions;   /*List of transactions*/
+	HashMap<String,TreeSet<Integer>> variableSets; /*Store transactions which has called SET for variables*/
+	HashMap<String,TreeSet<Integer>> variableUnSets; /*Store transactions which has called UNSET for variables*/
 	
 }
